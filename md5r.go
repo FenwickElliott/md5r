@@ -21,6 +21,11 @@ func Struct(in interface{}) string {
 	t := reflect.TypeOf(in)
 	v := reflect.ValueOf(in)
 
+	if reflect.ValueOf(in).Kind() == reflect.Ptr {
+		t = t.Elem()
+		v = v.Elem()
+	}
+
 	for i := 0; i < t.NumField(); i++ {
 		if !strings.Contains(t.Field(i).Tag.Get("ignore"), "md5") {
 			h.Write([]byte(fmt.Sprintf("%v", v.Field(i))))
